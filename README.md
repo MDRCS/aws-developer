@@ -83,3 +83,39 @@
     8- sign-out and sign-in to make sure its working
 
     Congrats you re done.
+    
+    3- AWS CLI (Command line interface) :
+
+    3-1 How users could access AWS console ? :
+
+    + basicaly we use access_key generated from aws console management to access aws from command-line.
+    - here is the steps that we should follow to make AWS CLI ready to use :
+    1- install aws cli 
+    2- go to IAM -> users -> security credentials -> dowload access key
+    3- go to your cli and run $ aws configure
+    4- Copy/Paste credentials.
+    5- to make sure you entred valid credentials 
+    run $ aws iam list-users (to get all users in this account)
+    
+    + Result :
+
+    {
+        "Users": [
+            {
+                "Path": "/",
+                "UserName": "mdrahali",
+                "UserId": "AIDAWQGDRKKVKHBCZNJOJ",
+                "Arn": "arn:aws:iam::447086678698:user/mdrahali",
+                "CreateDate": "2022-02-01T09:24:55+00:00",
+                "PasswordLastUsed": "2022-02-01T13:40:27+00:00"
+        }
+    
+    3-2 IAM Roles :
+    
+    - IAM Roles alike Groups policies for AWS Users, Roles are related to AWS Services, for example we have an EC2 instance 
+      that needs to perform certain actions on aws services we need to create a role for it just to make sure it have the required permission for.
+
+    + Common Roles : 
+    1- EC2 Instance roles
+    2- Lambda function roles
+    3- Roles for CloudFormation
