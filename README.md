@@ -1,7 +1,7 @@
 # aws-developer
 - AWS Certified Developer AKA DVA-C01
 
-- There is over 30 AWS services.
+- There is over 286 AWS services.
 
 ![aws-services](./static/aws-services.png)
 
@@ -119,3 +119,29 @@
     1- EC2 Instance roles
     2- Lambda function roles
     3- Roles for CloudFormation
+
+### 3- EC2 Fundamentals :
+
+    - EC2 is the virtual server used in aws cloud provider.
+
+    + Setup Budget Limit :
+    - before we start using this service we should setup a budget notification setting to notify in case we bypassed 
+      the fixed budget limit.
+
+    1- Go to root Account -> go to `Account` and search for `IAM User and Role Access to Billing Information` activate it for IAM users, 
+    2- Sign-out and login to your IAM user, go to `Billing Dashboard`.
+    3- Go to budget -> create a budget
+    4- choose `cost budget` -> click on next
+    5- budget limit settings :
+       5-1 Period : Monthly
+       5-2 Recurring Budget
+       5-3 Fixed
+       5-4 budget : 10$
+       5-5 Budget Name : Learning Cost
+       5-6 click on next -> add an `Alert Threshold` (e.g When i consumed 80% of the budget send me am alert)
+           5-6-1 Alert #1 : 80% of actual budget + Your Email.
+           5-6-2 Alert #2 : 60% of forcasted budget + Your Email.
+
+       5-7 Finally click on `create budget`.
+
+    
