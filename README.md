@@ -271,8 +271,66 @@
 ![ports](./static/ports.png)
 
     
+    3-3 SSH Connect to instance :
     
+    - SSH is a protocol that allows to access/Control a machine remotly.
+      and it work at port 22 (Inbound).
     
+    + To access EC2 instance from your computer :
+
+    - if you run the command below directly you will get this error message `Permissions 0644 for 'ec2-keys.pem' are too open`.
+    $ ssh -i ec2-key.pem ec2-user@IPV4-PUBLIC-ADDRESS 
+    
+    - Instead :
+    $ chmod 0400 ec2-keys.pem (Allows the owner to read)
+    $ ssh -i ec2-key.pem ec2-user@IPV4-PUBLIC-ADDRESS 
+    
+    - SSH Troubleshooting :
+    + I connected yesterday to ec2 instance but i cannot today :
+    + This is probably because you have stopped your EC2 instance and then started it again today. When you do so, the public IP of your EC2 instance will change. Therefore, in your command, or Putty configuration, please make sure to edit and save the new public IP.
+    
+    ++ Also if you wanna check args related to your instance (SSH Client) select your instance and click connect.
+    
+    - EC2 Instance IAM Role :
+    + We will explain thought next commands how to assign IAM Roles and give ec2 instance certains permissions
+    $ aws iam list-users
+    Unable to locate credentials. You can configure credentials by running "aws configure".
+    NB: if we use `aws configure` and give our access key it s a dangerous step that will make anyone that have access to this instance to get this credentials. 
+    
+    - Instead we should assign an iam role to our instance :
+    1- select `instance` and click on `actions` and choose `security` -> `Modify Role`
+    2- create a role that have `IAMReadOnlyAccess` Permission -> save it as `DemoEC2`.
+    3- get back to ec2 choose your instance click on `actions` and choose `security` -> `Modify Role`
+    4- choose `DemoEC2` role and save it.
+
+    5- run $ aws iam list-users (thought ssh client from your computer)
+        {
+            "Users": [
+                {
+                    "UserName": "mdrahali", 
+                    "PasswordLastUsed": "2022-02-03T12:37:49Z", 
+                    "CreateDate": "2022-02-01T09:24:55Z", 
+                    "UserId": "AIDAWQGDRKKVKHBCZNJOJ", 
+                    "Path": "/", 
+                    "Arn": "arn:aws:iam::447086678698:user/mdrahali"
+                }
+            ]
+        }
+
+    3-4 Before choosing an EC2 instance to optimize charges you know the periode of using this instance like
+        that you economize money :
+
+![purchase plans](./static/EC2-purchases-plans.png)        
+![purchase plans](./static/on-demand.png)
+![purchase plans](./static/spot-instance.png)
+![purchase plans](./static/reserved-instance.png) 
+![purchase plans](./static/dedicated-host.png)
+![purchase plans](./static/dedicated-instance.png)
+![purchase plans](./static/explainer.png) 
+![purchase plans](./static/pricing-comparaison.png) 
+    
+
+
     
     
     
