@@ -232,4 +232,47 @@
     !IMPORTANT : there is a website that show the comparaison between different instance types in aws :
                  https://instances.vantage.sh/
 
+    3-2 Security Groups :
+    + They are controlling traffic into and out of our instance.
+    
+![security-groups](./static/security-groups.png)
+    
+    + security groups are acting like firewalls to ec2 instance.
+    + allowing access to certains ports.
+
+![security groups config](./static/security-groups-config.png)
+
+    NB: IP ADDRESS Range if you use 0.0.0.0/0 for http protocol that mean any ip address could access to our instance.
+    0.0.0.0/0 for IPV4
+    ::/0 for IPV6
+
+![security groups firewall diagram](./static/security-groups-firewall.png)
+    
+    + to elaborate diagram of security groups idea :
+    ++ basicaly if defined a fixed ip address for inbound traffic you will have to access your instance only from this address (e.g your computer ip)
+      but if you define it as 0.0.0.0/0 that mean anyt ip address could access it.
+
+    - Security groups infos :
+    1- security group is locked down to a combination of vpc/region.
+    2- it's good to maintain one separate security group for ssh.
+    3- if your application is not accessable (timeout) it's a security group issue
+       and if it's connection refused message it's an application issue.
+    4- All inbound traffic is blocked by default.
+    5- All outbound traffic is authorized by default.
+    
+    IMPORTANT: 
+    + Security groups could be attached to multiple instances.    
+    + Also Instances could access each other if they have the same security group attached.
+    
+#### + Example Diagram :
+
+![security groups use case](./static/use-case.png)
+  
+![ports](./static/ports.png)
+
+    
+    
+    
+    
+    
     
