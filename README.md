@@ -330,7 +330,25 @@
 ![purchase plans](./static/pricing-comparaison.png) 
     
 
+### 4- Amazon EBS - Elastic Block Storage :
 
+    - an EBS volume is a network drive that you can attach to your instance,
+      while they run.
+    - it allows your instance to persist data even after termination. (IMPORTANT: we can enable deleting or preserving EBS volume on termination)
+    - This volume could be attached to multiple ec2 instances at the same time at a condition that they should be in the same Availibility Zone.
+    - They are bound to a specific availibility zone. 
+    
+    IMPORTANT: That mean EBS in us-east-1 cannot be attached to us-east-2, but there is an alternative to move volumes
+    to different availibility zones is to take a snapshots of the volume.
+
+    - EBS have provisioned capacity (size in GB, IOPS) :
+    + You get billed on provisioned capacity.
+    + you can increase over time this capacity.
+        
+![ebs diagram](./static/ebs.png)    
+
+    
+    
     
     
     
