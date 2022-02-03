@@ -144,4 +144,92 @@
 
        5-7 Finally click on `create budget`.
 
+    3-1 EC2 sizing & Configurations :
+    
+    - How much compute power that you need (CPU Cores) 
+    - How much RAM 
+    - How much storage space : NETWORK ATTACHED EBS, EFS | Hardware Disk Capacity EC2.
+    - Network Card and IP Address
+    - Firewall Rules : Security Group
+    - Boostrap Script (Script Excuted at the first launch) : EC2 user data
+
+    + EC2 User Data :
+    - is a script ran when it the first launch of ec2 instance.
+    - CAUTION : the script is launched using root user so every command should require `SUDO` in the beginning.
+
+![ec2 user data](./static/ec2-user-data.png)
+
+![instance types](./static/instances-types.png) 
+
+    3-2 Create your first ec2 instance :
+    
+    1- go to ec2 -> click on `launch instance`
+    2- choose your Image For Virtual Machine (e.g RedHat)
+    3- choose your instance config.
+    4- next go to user data at the bottom paste this script :
+    
+    """
+        #!/bin/bash
+        # Use this for your user data (script from top to bottom)
+        # install httpd (Linux 2 version)
+        yum update -y
+        yum install -y httpd
+        systemctl start httpd
+        systemctl enable httpd
+        echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+    """
+    
+    5- next add security group (as shown in security group config we have only tcp configured so we should 
+        add http) :
+       5-1 add http with port 80 and 0.0.0.0/0 to make sure it's available thought all IPs.
+    6- then click on launch and create a key pair that will allow you to connect to your aws instance securely.
+    NB: you should protect the key pair download cuz you cannot download it again.
+
+    7- to make sure that your instance has been launched succesfuly and boot was done correctly 
+       go to instance infos search for `Public IPv4 address` copy it and paste it in another tab.
+
+    
+    IMPORTANT: if you click directly on open address it use https which is not configured yet in our instance so it won't work this is why you should
+        use http://IPV4 to check for result.
+    
+    - EC2 Instance Types for different use cases :
+    + General Purposes
+    + Compute Optimized
+    + Memory Optimized
+    + Accelerated Computing
+    + Storage Optimized
+    + Instance Features
+    + Measuring Instance Performance
+        
+    - Naming Conventions Of Instance Types :
+    e.g m5.2xlarge
+        + m is for instance type (General Purposes)
+        + 5 is for generation of hardware
+        + 2.xlarge is for size of instance (Include CPU, RAM etc)   
+
+    + General purposes instances :
+    - they have a great diversity of workloads.
+    - Balance between :
+      * Compute
+      * Memory
+      * Networking
+
+    + Compute Optimized :
+    - Great for computer-intensive task that require high-performance processors.
+    - use cases e.g -> Batch processing workloads, Media Transcoding, High Performance Computing, High Performance Servers, 
+                       Scientific Modeling & Machine learning, Dedicated Gaming Servers. 
+    
+    + Memory Optimized :
+    - Fast performance for workloads that process large datasets in memory (RAM).
+    - use cases e.g -> High Perfomance Relational/Non-Relational databases, destributed web scale cache stores,
+                       In-memory databases optimized for BI, Applications performing real-time processing of big unstructured data.
+
+    + Storage Optimized :
+    - Great for storage intensive tasks that require high, sequential read/write access to large datasets on localstorage.
+    - use cases e.g -> High Frequency online transaction (OLTP), Relational/NoSQL databases, cache for in-memory databases (e.g Redis), 
+                       datawarehousing applications, Distributed File Systems.
+
+    !IMPORTANT : there is a website that show the comparaison between different instance types in aws :
+                 https://instances.vantage.sh/
+
     
