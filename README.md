@@ -366,6 +366,86 @@
 
     Done!
     
+    + There is an alternative to Amazon EBS with better performance (IOPS) :
+    +++ EC2 Instance Store :
+    
+    - EBS have limited performance compared to EC2 instance store.
+    - EC2 store lose there data immediatly when they are stopped.
+    - Good for buffer / Cache / Scratch Data  / Temporary data.
+    - Risk of data loss if hardware fail.
+    - Backup and replication at your responsability .
+
+    *IMPORTANT: EC2 Instance is the best choice when it comes to IOPS it could acheive 310 000 iops/s better that EBS io2.
+
+![ec2-iops](./static/ec2-store-iops.png)
+
+![ebs-volumes-types](./static/ebs-volumes-types.png)    
+![general purposes ssd](./static/general-purposes-ssd.png)    
+![provisonned iops](./static/provisionned-iops.png)    
+![HDD](./static/HDD.png)    
+
+    IMPORTANT : Thought this website you can check the differences between EBS Volume hardaware provided by aws. 
+                >> https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-volume-types.html
+    
+    Also yoiu should take into consideration that Only Provisoned IOPS that support EBS Multi Attach.
+
+![ebs multi attach](./static/ebs-multi-attach.png)
+    
+    IMPORTANT : To have safe Read/Write from the same volume for 3 EC2 instances for example application hosted into those instances
+                should handle concurrent operations to not get into inconsistency.
+
+### 5- Amazon EFS | Elastic File System :
+    
+![efs](./static/EFS.png)
+    
+    + Note :
+    - The most important feature is that it allow multiple ec2 instances from different availibility zones to connect to the same Network File System.
+
+![efs use cases](./static/efs-use-cases.png)
+![efs plans | configs](./static/efs-plans.png)
+    
+    +++ Tutorial use EFS for mutiple EC2 instances in different availibilty zones :
+        
+    1- go to EFS, click on create EFS.
+    2- Name it `DemoEFS` choose `custom` -> set Life cycle management (if you want to) -> click on next.
+    3- go to ec2 -> security groups -> create a security group `efs-sg` with no inbound settings (keep defaults one).
+    4- GO back to EFS that you was creating -> network access section -> delete default security groups for every region and add `efs-sg` to them.
+    5- go to ec2 dashboard -> create an instance -> for subnet settings put it at `use-east-1a` -> security groups name it `ec2-to-efs` (keep only ssh (default settings)) -> next and launch. 
+    6- create second instance from the first instance -> go to `instances` -> click right on first instance -> click on `image and templates` -> click on `launch more like that`.
+    7- go to `instance details` -> `subnets` change it to `us-east-1c` to have differents availibility zones on the two instances.
+    8- next and launch the second instance.
+    
+    * EFS config :
+
+    1- AMAZON CLI (Applied for both Instances) :
+    $ chmod 0400 ec2-key.pem
+    $ ssh -i ec2-key.pem ec2-user@IPV4-PUBLIC-ADDRESS
+    
+    2- go to EFS click on `DemoEFS` -> click on attach (it will give information how to link EFS with instances)
+    3- click on `user guide` 
+    4- it said you need to install a package called `amazon-efs-utils`.
+    5- run $ sudo yum install -y amazon-efs-utils
+    6- we need to create `efs` directory -> run $ mkdir efs
+    7- go to security groups -> go to `EFS-SG` security group created for EFS (DemoEFS), you will notice that it doesn't have any inbound protocol.
+    8- add NFS (Network File system) port 2049 -> for IP addresses choose `ec2-to-efs` security group (Link).
+
+![efs security group](./static/efs-sg.png)
+    
+    * Check if File System is distrubuted and shared between instances accross different availibility zones :
+    
+    9- from first instance cli -> cd efs (get into directory) -> run $ sudo touch hello-world.txt -> $ sudo nano hello-world.txt -> add a sentence.
+    10- go to second instance cli -> cd efs (get into directory) -> cat hello-world.txt >>
+        "sentence"
+
+    Done!
+    
+    - EFS | Life cycle management :
+    + Life cycle management is an option in EFS you set periode to activate the move from EFS to EFS-IA (Infrequent Access) for example 30 days, if data wasn't accessed during 30 days 
+      automatically data will be moved to another type of EFS which is EFS-IA, it have low pricing and it help optimizing billing for you.
+
+![ebs comparaison](./static/ebs-desc.png)
+![efs comparaison](./static/efs-desc.png)
+
 ### 5 - Amazon AMI | Amazon Machine Image :
 
     - AMI is a pre-packaging OS, Tools that you will use as dependecies inside your instance.
@@ -394,4 +474,4 @@
         + first one should show only apache starter page
         + Second one should show something like this `Hello World from ip-172-31-26-105.us-east-2.compute.internal`
 
-    
+    NB: AMI are built for a specific Region.
