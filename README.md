@@ -347,6 +347,24 @@
         
 ![ebs diagram](./static/ebs.png)    
 
+    4-1 Create An EBS Snapshot for Backup at any given point of time :
+    
+![ebs snapshot](./static/ebs-snapshot.png)
+    
+    4-1-1 Tutorial How to create a volume and attach it to an instance :    
+    1- go to volumes, create that volume
+    2- wait until we have running status on the volume then click right on this volume -> click on `attach volume` choose instance.
+    
+    NB: volume and instance should be in the same availibilty zone.
+
+    4-1-2 Tutorial How to move a volume from us-east-2 to us-east-1 using snapshot (BackUp) technique :
+    
+    1- go to volumes click right on volume that you want to move to other AZ.
+    2- click on `create a snapshot` then go to `snapshots` and click right on snapshot of this volume.
+    3- click on `copy snapshot` -> choose `us-east-1` as an availibility zone.
+    4- go to `us-east-1` you will find your snapshot (copied from us-east-2) -> select the snapshot then click right and click on create volume from snapshot.
+
+    Done!
     
     
     
