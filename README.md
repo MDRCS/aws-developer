@@ -366,7 +366,32 @@
 
     Done!
     
-    
-    
-    
+### 5 - Amazon AMI | Amazon Machine Image :
+
+    - AMI is a pre-packaging OS, Tools that you will use as dependecies inside your instance.
+    IMPORTANT : we can create an AMI from a launched EC2 (e.g we launched an ec2 instance based 
+                on public ami and we added some depencies and we want to have the same AMI for another instance.)
+
+![AMI](./static/AMI.png)
+
+    - Tutorial - Creating AMI from EC2 instance :
+
+    1- launch an instance (Default Setup)
+    2- For EC2 User data script -> add apache installation only :
+        #!/bin/bash
+        # Use this for your user data (script from top to bottom)
+        # install httpd (Linux 2 version)
+        yum update -y
+        yum install -y httpd
+        systemctl start httpd
+        systemctl enable httpd
+    3- next click right on ec2 instance -> go to image and template -> click on create ami from ec2 instance.
+    4- go to `instances` -> click on `launch an instance` -> go to `my AMI` choose the AMI created recently -> default setup for EC2 instance.
+    5- for EC2 user data script (Second EC2 instance based on AMI) add >>
+        echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+
+    6- when accessing differents EC2 instances : 
+        + first one should show only apache starter page
+        + Second one should show something like this `Hello World from ip-172-31-26-105.us-east-2.compute.internal`
+
     
